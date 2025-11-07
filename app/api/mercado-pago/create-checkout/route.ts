@@ -5,6 +5,14 @@ import mpClient from "@/app/lib/mercado-pago";
 export async function POST(req: NextRequest) {
   const { testeId, userEmail } = await req.json();
 
+  // Validações recomendadas pelo Mercado Pago
+  if (!testeId) {
+    return NextResponse.json(
+      { error: "external_reference (testeId) é obrigatório" },
+      { status: 400 }
+    );
+  }
+
   try {
     const preference = new Preference(mpClient);
 
@@ -60,6 +68,9 @@ export async function POST(req: NextRequest) {
           failure: `${req.headers.get("origin")}/?status=falha`,
           pending: `${req.headers.get("origin")}/api/mercado-pago/pending`, // Criamos uma rota para lidar com pagamentos pendentes
         },
+        notification_url: `${req.headers.get(
+          "origin"
+        )}/api/mercado-pago/webhook`, // URL para receber notificações
       },
     });
 
@@ -72,7 +83,15 @@ export async function POST(req: NextRequest) {
       initPoint: createdPreference.init_point,
     });
   } catch (err) {
-    console.error(err);
-    return NextResponse.error();
+    console.error("Erro ao criar preferência:", err);
+
+    // Retornar erro mais descritivo
+    const errorMessage =
+      err instanceof Error ? err.message : "Erro desconhecido";
+
+    return NextResponse.json(
+      { error: "Erro ao criar checkout", details: errorMessage },
+      { status: 500 }
+    );
   }
 }
