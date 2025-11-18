@@ -52,7 +52,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, error: 'Erro interno do servidor', message: err.message });
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Servidor iniciado na porta ${PORT} com CORS para ${ALLOWED_ORIGIN}`);
-});
+// Para desenvolvimento local
+if (require.main === module) {
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`Servidor iniciado na porta ${PORT} com CORS para ${ALLOWED_ORIGIN}`);
+  });
+}
+
+// Exporta para Vercel Serverless Functions
+module.exports = app;
