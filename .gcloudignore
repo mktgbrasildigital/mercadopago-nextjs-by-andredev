@@ -1,0 +1,41 @@
+# Ignora arquivos do Next.js que não são necessários para o servidor Express
+.next/
+out/
+build/
+app/
+docs/
+sdk/
+public/
+
+# Arquivos de teste
+__tests__/
+*.test.ts
+*.test.js
+jest.config.js
+jest.setup.js
+
+# Documentação
+*.md
+!README.md
+
+# Scripts
+*.sh
+
+# Arquivos de desenvolvimento
+.git/
+.gitignore
+.vscode/
+.idea/
+node_modules/
+coverage/
+
+# Arquivos de ambiente (não fazer upload de secrets)
+.env
+.env.local
+.env*.local
+
+# TypeScript config (não necessário em produção)
+tsconfig.json
+
+# Husky
+.husky/
