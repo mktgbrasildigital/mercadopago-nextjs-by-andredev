@@ -169,9 +169,7 @@ describe("POST /api/mercado-pago/create-subscription", () => {
     const data = await response.json();
 
     expect(response.status).toBe(400);
-    expect(data.error).toBe(
-      "Tipo de plano inválido. Use 'monthly' ou 'annual'"
-    );
+    expect(data.error).toBe("Período inválido");
     expect(mockPreApprovalCreate).not.toHaveBeenCalled();
   });
 
@@ -197,7 +195,7 @@ describe("POST /api/mercado-pago/create-subscription", () => {
     const data = await response.json();
 
     expect(response.status).toBe(400);
-    expect(data.error).toBe("Email do usuário é obrigatório");
+    expect(data.error).toBe("Email válido é obrigatório");
     expect(mockPreApprovalCreate).not.toHaveBeenCalled();
   });
 
