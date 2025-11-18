@@ -14,17 +14,18 @@ New-Item -ItemType Directory -Path $deployDir | Out-Null
 Write-Host "📦 Copiando arquivos necessários..." -ForegroundColor Yellow
 Copy-Item "server.js" -Destination $deployDir
 Copy-Item "package-server.json" -Destination "$deployDir\package.json"
+Copy-Item ".npmrc-server" -Destination "$deployDir\.npmrc"
 Copy-Item "Dockerfile" -Destination $deployDir
 Copy-Item ".dockerignore" -Destination $deployDir
 
 # Navegar para o diretório de deploy
 Set-Location $deployDir
 
-# Criar package-lock.json limpo
-Write-Host "📋 Gerando package-lock.json limpo..." -ForegroundColor Yellow
-npm install --package-lock-only
+# Instalar dependências
+Write-Host "📋 Instalando dependências..." -ForegroundColor Yellow
+npm install --production
 
-# Fazer deploy
+# Fazer deploy no Google Cloud Run
 Write-Host "☁️ Fazendo deploy no Google Cloud Run..." -ForegroundColor Cyan
 gcloud run deploy mercadopago-server `
     --source . `
