@@ -124,6 +124,13 @@ export async function POST(req: NextRequest) {
       },
       back_url: backUrl || "https://www.google.com", // URL de retorno
       payer_email: userEmail,
+      payer: {
+        email: userEmail,
+        address: {
+          zip_code: "01310-100",
+          country_code: "BR"
+        }
+      },
       external_reference: userId || `user_${Date.now()}_${period}`,
     };
 
